@@ -8,11 +8,6 @@ class ChooseLocation extends StatefulWidget {
 }
 
 class _ChooseLocationState extends State<ChooseLocation> {
-  @override
-  void initState() {
-    super.initState();
-    print('initState function ran');
-  }
   int counter = 0;
 
   @override
