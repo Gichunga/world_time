@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        data['flag'],
+                        'assets/${data["flag"]}',
                         width: 60.0,
                       ),
                       const SizedBox(

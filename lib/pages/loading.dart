@@ -15,7 +15,7 @@ class _LoadingState extends State<Loading> {
   void setUpWorldTime() async {
     // create an instance of the worldTime class and assign properties
     WorldTime worldTimeInstance = WorldTime(
-        location: 'Nairobi', flag: 'assets/kenya.png', url: 'Africa/Nairobi');
+        location: 'Nairobi', flag: 'ke.png', url: 'Africa/Nairobi');
     // call the fetchTime method to assign the time property
     await worldTimeInstance.fetchTime();
     // update loading state with api time
