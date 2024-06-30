@@ -20,26 +20,22 @@ class WorldTime {
       final response = await http
           .get(
           Uri.parse('http://worldtimeapi.org/api/timezone/Africa/Nairobi'));
+
       // if (response.statusCode == 200) {
       Map data = jsonDecode(response.body);
-      // print(data);
 
       // get properties from data
       String datetime = data['datetime'];
       // the substring of offset from start- inclusive to end- exclusive
       String offset = data['utc_offset'].substring(1, 3);
-      // print(offset);
-
       // create datetime object
       DateTime now = DateTime.parse(datetime);
-      // print(now);
       // parse offset to integer and it today's date
       now = now.add(Duration(hours: int.parse(offset)));
-
+      // initialize isDatetime variable based on the time of the day
       isDaytime = now.hour > 6 && now.hour < 20;
       // initialize the time property and return it
       time = DateFormat.jm().format(now);
-      print(time);
     // }
     }catch(e){
       print('caught error is : $e');
