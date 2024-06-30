@@ -28,6 +28,7 @@ class _LoadingState extends State<Loading> {
       'location': worldTimeInstance.location,
       'time': worldTimeInstance.time,
       'flag': worldTimeInstance.flag,
+      'isDaytime': worldTimeInstance.isDaytime,
     });
   }
 

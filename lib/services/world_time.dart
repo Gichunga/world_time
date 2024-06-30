@@ -9,6 +9,7 @@ class WorldTime {
   late String time; // the time in that location
   String url; // location url for the api endpoint
   String flag; // url to an asset flag url
+  bool isDaytime = false;
 
   // constructor
   WorldTime({required this.location, required this.flag, required this.url});
@@ -35,6 +36,7 @@ class WorldTime {
       // parse offset to integer and it today's date
       now = now.add(Duration(hours: int.parse(offset)));
 
+      isDaytime = now.hour > 6 && now.hour < 20;
       // initialize the time property and return it
       time = DateFormat.jm().format(now);
     // }
