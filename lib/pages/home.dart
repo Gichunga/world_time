@@ -13,15 +13,16 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    data = ModalRoute.of(context)!.settings.arguments as Map;
-    print(data);
+    data = data.isEmpty ? ModalRoute.of(context)!.settings.arguments
+        as Map : data ; // get the current route information
+    // print(data);
     // set background
     String bgImage = data['isDaytime'] ? 'day.jpg' : 'night.jpg';
     // set scaffold background color according to time of the day
     Color bgColor = data['isDaytime'] ? Colors.blueGrey : Colors.black45;
 
     return Scaffold(
-      backgroundColor: bgColor,
+        backgroundColor: bgColor,
         body: SafeArea(
             child: Container(
               decoration: BoxDecoration(
@@ -30,48 +31,60 @@ class _HomeState extends State<Home> {
                   fit: BoxFit.cover,
                 ),
               ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 120.0, 0, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/location');
-                    },
-                    icon: const Icon(Icons.edit_location_alt,),
-                    label: const Text(
-                      'edit location',
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 120.0, 0, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextButton.icon(
+                      onPressed: () async {
+                        dynamic result = await Navigator.pushNamed(context, '/location');
+                        setState(() { // trigger a rebuild
+                          data = {
+                            'location': result['location'],
+                            'flag': result['flag'],
+                            'isDaytime': result['isDaytime'],
+                            'time': result['time'],
+                          };
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.edit_location_alt,
+                      ),
+                      label: const Text(
+                        'edit location',
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/${data["flag"]}',
-                        width: 60.0,
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Text(
-                        data['location'],
-                        style: const TextStyle(fontSize: 28.0, letterSpacing: 2.0, color: Colors.white70),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20.0),
-                  Text(
-                    data['time'],
-                    style: const TextStyle(
-                      fontSize: 64.0,
-                      color: Colors.white70
+                    const SizedBox(height: 20.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/${data["flag"]}',
+                          width: 60.0,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(
+                          data['location'],
+                          style: const TextStyle(
+                              fontSize: 28.0,
+                              letterSpacing: 2.0,
+                              color: Colors.white70),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 20.0),
+                    Text(
+                      data['time'],
+                      style: const TextStyle(fontSize: 64.0, color: Colors.white70),
+                    ),
+                  ],
+                ),
               ),
-            ),
-    )));
+            )
+        )
+    );
   }
 }

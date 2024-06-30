@@ -9,13 +9,6 @@ class ChooseLocation extends StatefulWidget {
 }
 
 class _ChooseLocationState extends State<ChooseLocation> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  //
-  //   print('choose location page initState function ran');
-  //
-  // }
 
   List<WorldTime> locations = [
     WorldTime(url: 'Europe/London', location: 'London', flag: 'gb.png'),
@@ -28,6 +21,25 @@ class _ChooseLocationState extends State<ChooseLocation> {
     WorldTime(url: 'Asia/Jakarta', location: 'Jakarta', flag: 'in.png'),
   ];
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //
+  //   print('choose location page initState function ran');
+  //
+  // }
+
+  void updateTime(index) async{
+    WorldTime worldTimeInstance = locations[index];
+    await worldTimeInstance.fetchTime();
+    // navigate to home-screen and pass whatever data we get.
+    Navigator.pop(context, {
+      'location': worldTimeInstance.location,
+      'time': worldTimeInstance.time,
+      'flag': worldTimeInstance.flag,
+      'isDaytime': worldTimeInstance.isDaytime,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +59,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
             child: Card(
               child: ListTile(
                 onTap: () {
-                  print(locations[index].location);
+                  updateTime(index);
                 },
                 title: Text(locations[index].location),
                 leading: CircleAvatar(
