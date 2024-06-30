@@ -34,21 +34,18 @@ class _LoadingState extends State<Loading> {
   void initState() {
     super.initState();
 
-    print('initState function ran');
+    print('loading page initState function ran');
 
     setUpWorldTime();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(50.0),
+        padding: EdgeInsets.all(50.0),
         child: Text(
-          time,
-          style: const TextStyle(
-            fontSize: 20.0,
-          ),
+          'loading',
         ),
       ),
     );
