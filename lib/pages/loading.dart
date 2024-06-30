@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:world_time/services/world_time.dart';
 
 class Loading extends StatefulWidget {
   const Loading({super.key});
@@ -11,40 +9,48 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
+  String time = 'loading';
+
+  void setUpWorldTime() async {
+    // create an instance of the worldTime class and assign properties
+    WorldTime worldTimeInstance = WorldTime(
+        location: 'Nairobi', flag: 'assets/kenya.png', url: 'Africa/Nairobi');
+    // call the fetchTime method to assign the time property
+    await worldTimeInstance.fetchTime();
+    // update loading state with api time
+    setState(() {
+      time = worldTimeInstance.time;
+    });
+
+    // load home page and pass returned data
+    Navigator.pushReplacementNamed(context, '/home', arguments: {
+      'location': worldTimeInstance.location,
+      'time': worldTimeInstance.time,
+      'flag': worldTimeInstance.flag,
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+
     print('initState function ran');
-  }
 
-  void fetchTime() async {
-    final response = await http.get(Uri.parse('http://worldtimeapi.org/api/timezone/Africa/Nairobi'));
-    if (response.statusCode == 200) {
-      Map data = jsonDecode(response.body);
-      print(data);
-
-      // get properties from data
-      String datetime = data['datetime'];
-      // the substring of offset from start- inclusive to end- exclusive
-      String offset = data['utc_offset'].substring(1,3);
-      // print(offset);
-
-      // create datetime object
-      DateTime now = DateTime.parse(datetime);
-      // print(now);
-      // parse offset to integer and it today's date
-      now = now.add(Duration(hours: int.parse(offset)));
-      print(now);
-    } else {
-      print('Failed to load data');
-    }
+    setUpWorldTime();
   }
 
   @override
   Widget build(BuildContext context) {
-    fetchTime();
-    return const Scaffold(
-      body: Text('loading'),
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(50.0),
+        child: Text(
+          time,
+          style: const TextStyle(
+            fontSize: 20.0,
+          ),
+        ),
+      ),
     );
   }
 }
